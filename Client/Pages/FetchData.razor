@@ -1,0 +1,47 @@
+﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Template.Shared
+@inject ICryptoClientService CryptoClientService
+
+<link href="_content/Syncfusion.Blazor.Themes/fabric.css" rel="stylesheet" />
+
+<PageTitle>Price List</PageTitle>
+
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Price</th>
+				<th>Delete Record</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var course in Data)
+			{
+				<tr>
+					<td>@course.CryptoTimeDate</td>
+					<td>@course.Price</td>
+					<td>
+						<button class="btn btn-danger" type="button" @onclick="() => DeleteRecord(course.CryptoDateId)"> Delete </button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+@code{
+	List<CryptoDate> Data = new();
+	protected override async Task OnInitializedAsync()
+	{
+		Data = await CryptoClientService.GetAllCrypto();
+	}
+
+	private async Task DeleteRecord(int id)
+	{
+		await CryptoClientService.DeleteCrypto(id);
+		Data = await CryptoClientService.GetAllCrypto();
+	}
+}

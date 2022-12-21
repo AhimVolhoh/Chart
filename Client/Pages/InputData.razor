@@ -1,0 +1,41 @@
+﻿@page "/input"
+
+@inject ICryptoClientService ClientCrypto
+@inject NavigationManager navManager
+
+
+<EditForm Model=newCrypto OnValidSubmit=@SendForm>
+	<div class="form-group row">
+		<label for="price" class="col-md-2 col-form-label">Price</label>
+		<div class="col-md-10">
+			<input id="price" class="form-control" @bind=newCrypto.Price />
+		</div>
+	</div>
+	<div class="form-group row">
+		<label for="price" class="col-md-2 col-form-label">Choose a date</label>
+		<div class="col-md-10">
+			<InputDate id="price" class="form-control" @bind-Value=newCrypto.CryptoTimeDate />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12" text-right>
+			<button type="submit" class="btn btn-success">Add Crypto</button>
+		</div>
+	</div>
+</EditForm>
+
+
+@code {
+	CryptoDate newCrypto = new();
+
+	private async Task SendForm()
+	{
+		string errorMessage = string.Empty;
+		if (newCrypto != null)
+		{
+			await ClientCrypto.AddCrypto(newCrypto);
+			navManager.NavigateTo("/stats",true);
+
+		}
+	}
+}

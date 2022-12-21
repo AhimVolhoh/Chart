@@ -1,0 +1,68 @@
+﻿@page "/stats"
+@inject NavigationManager _navManager;
+@inject ICryptoClientService CryptoService
+@using ChartJs.Blazor.BarChart
+
+<h3>Chart</h3>
+<Chart Config="_config"></Chart>
+
+@code {
+	private BarConfig _config;
+	List<CryptoDate> cryptoDates = new();
+	protected override async Task OnInitializedAsync()
+	{
+		cryptoDates = await CryptoService.GetAllCrypto();
+		ConfigurePieConfig(cryptoDates);
+	}
+
+	private void ConfigurePieConfig(List<CryptoDate> data)
+	{
+		_config = new BarConfig();
+
+		_config.Options = new BarOptions
+			{
+				MaintainAspectRatio = true,
+				Responsive = true,
+				Title = new OptionsTitle
+				{
+					Display = true,
+					Text = "Crypto Statistics"
+				}
+			};
+
+
+		var recordsByDay = data.Select(s => s.CryptoTimeDate)
+		.ToList();
+
+		foreach (var recordByDay in recordsByDay)
+		{
+			_config.Data.Labels.Add(recordByDay.ToString());
+		}
+
+		var dataSet = new BarDataset<decimal>()
+			{
+				BackgroundColor = new[]
+				{
+				ColorUtil.ColorHexString(255,0,0),
+				ColorUtil.ColorHexString(0,255,0),
+				ColorUtil.ColorHexString(0,0,255),
+				ColorUtil.ColorHexString(99,4,0),
+				ColorUtil.ColorHexString(0,67,89),
+				ColorUtil.ColorHexString(44,15,0),
+				ColorUtil.ColorHexString(66,44,100),
+				ColorUtil.ColorHexString(35,100,100),
+				ColorUtil.ColorHexString(6,6,4),
+				ColorUtil.ColorHexString(55,16,23),
+				ColorUtil.ColorHexString(0,130,70),
+				ColorUtil.ColorHexString(0,0,100)
+			}
+			};
+
+		foreach (var cryptoRecord in data)
+		{
+			dataSet.Add(cryptoRecord.Price);
+		}
+
+		_config.Data.Datasets.Add(dataSet);
+	}
+}
