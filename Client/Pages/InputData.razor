@@ -5,15 +5,15 @@
 
 
 <EditForm Model=newCrypto OnValidSubmit=@SendForm>
-	<div class="form-group row">
+	<div class="form-group row mb-1">
 		<label for="price" class="col-md-2 col-form-label">Price</label>
-		<div class="col-md-10">
+		<div class="col-md-2">
 			<input id="price" class="form-control" @bind=newCrypto.Price />
 		</div>
 	</div>
-	<div class="form-group row">
+	<div class="form-group row mb-1">
 		<label for="price" class="col-md-2 col-form-label">Choose a date</label>
-		<div class="col-md-10">
+		<div class="col-md-2">
 			<InputDate id="price" class="form-control" @bind-Value=newCrypto.CryptoTimeDate />
 		</div>
 	</div>
