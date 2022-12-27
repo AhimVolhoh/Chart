@@ -10,13 +10,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddHttpClient("Template.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-	.AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-// Supply HttpClient instances that include access tokens when making requests to the server project
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Template.ServerAPI"));
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<ICryptoClientService, CryptoClientService>();
-builder.Services.AddApiAuthorization();
+//builder.Services.AddApiAuthorization();
 await builder.Build().RunAsync();

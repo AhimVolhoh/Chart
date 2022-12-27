@@ -21,8 +21,8 @@ builder.Services.AddScoped<ICryptoServices, CryptoService>();
 builder.Services.AddIdentityServer()
 	.AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-builder.Services.AddAuthentication()
-	.AddIdentityServerJwt();
+//builder.Services.AddAuthentication()
+//	.AddIdentityServerJwt();
 
 
 builder.Services.AddControllersWithViews();
@@ -56,9 +56,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseIdentityServer();
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseIdentityServer();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 
 app.MapRazorPages();
